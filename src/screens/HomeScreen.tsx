@@ -44,6 +44,16 @@ export default function HomeScreen() {
 
     setReminders(sorted);
 
+    const wasReset = await AsyncStorage.getItem(RESET_KEY);
+
+    if (wasReset) {
+      setDayReset(true);
+      setConsumed(0);
+      return;
+    }
+
+    setDayReset(false);
+
     const done = sorted
       .filter(
         (r) =>
@@ -53,9 +63,6 @@ export default function HomeScreen() {
       .reduce((sum, r) => sum + r.amount, 0);
 
     setConsumed(done);
-
-    const wasReset = await AsyncStorage.getItem(RESET_KEY);
-    setDayReset(!!wasReset);
   };
 
   useFocusEffect(
@@ -72,16 +79,16 @@ export default function HomeScreen() {
     setReminders(updated);
     await saveReminders(updated);
 
-    if (status === "completed") {
+    if (!dayReset && status === "completed") {
       const amt = reminders.find((r) => r.id === id)?.amount ?? 0;
       setConsumed((prev) => prev + amt);
     }
   };
 
   const onResetDay = async () => {
-    setConsumed(0);
-    setDayReset(true);
     await AsyncStorage.setItem(RESET_KEY, "true");
+    setDayReset(true);
+    setConsumed(0);
   };
 
   return (
@@ -152,7 +159,7 @@ export default function HomeScreen() {
         )}
       />
 
-      {consumed >= target && (
+      {consumed >= target && !dayReset && (
         <TouchableOpacity
           onPress={onResetDay}
           style={{
