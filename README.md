@@ -1,5 +1,7 @@
 #  Daily Water Intake Tracker
 
+### • Live App (Expo EAS Update – open via Expo Go):   https://expo.dev/accounts/coder_shelby_07/projects/water-tracker/updates/117ad54e-861e-47f6-9ef7-8d8e676c93e3
+
 A simple and clean **React Native (Expo)** application to track daily water consumption, visualize progress, and review weekly hydration stats.
 
 This project was built as part of a technical assignment to demonstrate UI design, state management, navigation, and basic data calculations.
